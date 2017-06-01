@@ -10,6 +10,7 @@
 
 const title = 'Page Title';
 const message = 'Hello Everyone!';
+const logo = require('./images/webpack-logo.png')
 
 const html = `
   <!doctype html>
@@ -24,6 +25,7 @@ const html = `
     </head>
     <body>
       ${message}
+      <img src="${logo}" width="500"/>
       <div id="main"></div>
     </body>
   </html>
