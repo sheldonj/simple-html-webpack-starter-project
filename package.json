@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server -d --history-api-fallback --hot --inline --progress --colors --port 3000"
+    "start": "webpack-dev-server -d --history-api-fallback --hot --inline --progress --colors --port 3000",
+    "build": "rm -rf dist && NODE_ENV=production webpack --progress --colors",
+    "serve" : "npm run build && ./node_modules/serve/bin/serve.js dist"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.5",
     "sass-loader": "^6.0.5",
+    "serve": "^5.2.0",
     "style-loader": "^0.18.1",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
