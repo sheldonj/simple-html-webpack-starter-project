@@ -11,6 +11,7 @@
 const title = 'Page Title';
 const message = 'Hello Everyone!';
 const logo = require('./images/webpack-logo.png')
+const svgLogo = require('./images/logo.svg')
 
 const html = `
   <!doctype html>
@@ -26,6 +27,7 @@ const html = `
     <body>
       ${message}
       <img src="${logo}" width="500"/>
+      <img src="${svgLogo}" width="500"/>
       <div id="main"></div>
     </body>
   </html>
