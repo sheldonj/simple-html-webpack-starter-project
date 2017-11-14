@@ -10,7 +10,7 @@
 
 const title = 'Page Title';
 const message = 'Hello Everyone!';
-const logo = require('./images/webpack-logo.png')
+const logo = require('./images/webpack-logo.png');
 
 const html = `
   <!doctype html>
