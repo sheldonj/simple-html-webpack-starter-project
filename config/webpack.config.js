@@ -1,18 +1,28 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
-const webpack = require('webpack'); //to access built-in plugins
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
+const constants = require('./constants');
+const paths = require('./paths');
 
 const config = {
-  entry: './src/index.js',
+  entry: { main: paths.entry },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[hash:8].js'
+    path: paths.dist,
+    chunkFilename: '[name].[hash:8].js',
+    filename: '[name].[hash:8].js',
+    library: [constants.library, '[name]'],
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   module: {
     rules: [
       {
         test: /\.(js)$/,
         include: [path.resolve(__dirname, 'src')],
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader'
       },
       {
@@ -40,12 +50,14 @@ const config = {
           /\.html$/,
           /\.(js|jsx)$/,
           /\.css$/,
+          /\.sass$/,
           /\.scss$/,
           /\.json$/,
           /\.bmp$/,
           /\.gif$/,
           /\.jpe?g$/,
-          /\.png$/
+          /\.png$/,
+          /\.svg$/
         ],
         loader: require.resolve('file-loader'),
         options: {
@@ -53,7 +65,7 @@ const config = {
         }
       },
       {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        test: [/\.bmp$/, /\.gif$/, /\.jpg$/, /\.jpeg$/, /\.png$/, /\.svg$/],
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
@@ -63,8 +75,15 @@ const config = {
     ]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
-    new HtmlWebpackPlugin({ inject: true, template: './src/index.html.js' })
+    new ManifestPlugin(),
+    new UglifyJsPlugin({ sourceMap: true, uglifyOptions: { ecma: 8 } }),
+    new HtmlWebpackPlugin({ inject: true, template: paths.appHtml }),
+    new ImageminPlugin({
+      disable: process.env.NODE_ENV !== 'production',
+      pngquant: {
+        quality: '95-100'
+      }
+    })
   ]
 };
 
